@@ -3,6 +3,7 @@
 // Useful for creating project names.
 
 const numberOfWords = 2,
+  staticWord = "samsara",
   nameDisplay = document.querySelector("#nameDisplay");
 
 fetch("words.json")
@@ -10,19 +11,21 @@ fetch("words.json")
   .then((data) => mixWords(data.words, numberOfWords))
   .catch((error) => console.log(error));
 
-function mixWords(words, numberOfWords) {
-  const chosenWords = [];
-  // if chosen arr dont yet have all the words,
-  // loop through words arr and pick one and add to it
+function mixWords(words, numberOfWords, staticWord = undefined) {
+  const chosenWords = [],
+    numberOfWordsToChoose =
+      staticWord == undefined ? numberOfWords : numberOfWords - 1;
 
-  for (let i = 0; i < numberOfWords; i++) {
+  for (let i = 0; i < numberOfWordsToChoose; i++) {
     const random = Math.floor(Math.random() * (words.length + 1)),
       chosenWord = words[random];
 
     chosenWords.push(chosenWord);
   }
 
-  const name = chosenWords.join(" ");
+  const name = staticWord
+    ? staticWord + " " + chosenWords.join(" ")
+    : chosenWords.join(" ");
 
   nameDisplay.textContent = name;
 }
